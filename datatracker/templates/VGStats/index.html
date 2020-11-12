@@ -8,6 +8,7 @@
 <h1 style="text-align: center">Platform and Global Sales</h1>
 <canvas id="globalsales"></canvas>
 
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script>
     var ctx = document.getElementById('globalsales').getContext('2d');
@@ -16,7 +17,7 @@
         data: {
             labels: [{% for key in platformdict%} '{{key}}',{%endfor%}],
             datasets: [{
-                label: 'Global Sales By Console (Millions)',
+                label: 'Global Sales(Millions) By Console Since 2013',
                 barPercentage: 0.5,
                 barThickness: 6,
                 maxBarThickness: 8,

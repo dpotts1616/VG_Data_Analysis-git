@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1 style="text-align: center">{% block title %} Video Game Search {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+
+<form method="post">
+    <label for="title">Search For A Game</label>
+    <input name="title" id="title" value="{{ request.form['title'] }}" required>
+    <input type="submit" value="Submit">
+  </form>
+
+{% if game != None %}
+    <table>
+        <tr>
+            <td> Name: </td>
+            <td> {{game.name}}</td>
+        </tr>
+        <tr>
+            <td> Year: </td>
+            <td> {{game.year}}</td>
+        </tr>
+        <tr>
+            <td> Genre: </td>
+            <td> {{game.genre}}</td>
+        </tr>
+        <tr>
+            <td> Publisher: </td>
+            <td> {{game.publisher}}</td>
+        </tr>
+        <tr>
+            <td> Platforms: </td>
+            <td> {{platforms}}</td>
+        </tr>
+    </table>
+<canvas id="globalsales"></canvas>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+    var ctx = document.getElementById('globalsales').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: [{% for key in platformdict%} '{{key}}',{%endfor%}],
+            datasets: [{
+                label: 'Global Sales By Platform (Millions)',
+                barPercentage: 0.5,
+                barThickness: 6,
+                maxBarThickness: 8,
+                minBarLength: 2,
+                data: [{% for value in platformdict.values()%} '{{value}}',{%endfor%}]
+            }]
+        },
+
+        options: {}
+    });
+</script>
+{% endif %}
+{%if message != None%}{{message}}{%endif%}
+{% endblock %}

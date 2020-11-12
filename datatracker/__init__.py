@@ -19,6 +19,8 @@ def create_app():
     app.register_blueprint(VideoGameStatistics.bp)
     # app.add_url_rule('/', endpoint='index')
 
+
+
     @app.route('/hello')
     def hello():
         return 'Hello, World!'
