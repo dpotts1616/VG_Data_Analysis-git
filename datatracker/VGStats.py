@@ -25,10 +25,23 @@ def game_search():
     else:
         return render_template('VGStats/search.html', game=None, message="Sorry, we don't have that game")
 
+
 @bp.route('/region', methods=['GET'])
 def genre_by_region():
     region_data = get_genre_by_region();
     return render_template('VGStats/region.html', dictionary=region_data)
+
+
+@bp.route('/publisher_console', methods=('GET', 'POST'))
+def publisher_by_console():
+    games = get_data()
+    consoles = {game.platform for game in games}
+    if request.method == 'POST':
+        console = request.form['title']
+        publisherdata = publisher_by_console(console, games)
+        return render_template('VGStats/publisher_console.html', consoles=consoles, dictionary=publisherdata, console=console)
+    else:
+        return render_template('VGStats/publisher_console.html', consoles=consoles, dictionary=None)
 
 
 def get_data():
@@ -37,15 +50,9 @@ def get_data():
     return video_games
 
 
-def get_platforms():
-    video_games = get_data()
-    platforms = {game.platform for game in video_games}
-    return platforms
-
-
 def get_sales_by_platform():
     games = get_data()
-    platforms = get_platforms()
+    platforms = {game.platform for game in games}
     platformdict = {}
     for platform in platforms:
         platformdict[f'{platform}'] = 0
@@ -93,10 +100,17 @@ def get_genre_by_region():
         genre_region_dict[f'{game.genre}']['EU'] += game.euSales
         genre_region_dict[f'{game.genre}']['JP'] += game.jpSales
         genre_region_dict[f'{game.genre}']['Other'] += game.otherSales
-    for item in genre_region_dict:
-        print(item)
-        print(genre_region_dict[item]['NA'])
-        print(genre_region_dict[item]['EU'])
-        print(genre_region_dict[item]['JP'])
-        print(genre_region_dict[item]['Other'])
     return genre_region_dict
+
+
+def publisher_by_console(console, games):
+    publishers = {game.publisher for game in games}
+    console_publisher_dict = {}
+    # console_publisher_dict[f'{console}'] = ()
+    for x in publishers:
+        console_publisher_dict[f'{x}'] = 0
+    for game in games:
+        if game.platform == console:
+            console_publisher_dict[f'{game.publisher}'] += game.globalSales
+    console_publisher_dict = clean_up_dictionary(console_publisher_dict)
+    return console_publisher_dict

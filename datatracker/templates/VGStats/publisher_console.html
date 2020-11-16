@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1 style="text-align: center">{% block title %} Publisher Data By Console {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center">Publisher Sales by Console</h1>
+{% for item in consoles%}
+<form method="post" style="display:inline-block">
+<button {% if console == item %} style="background-color: #008CBA" {% endif %} type="submit" name="title" onclick="{{ url_for('VGStats.publisher_by_console') }}" value="{{item}}">{{item}}</button>
+</form>
+{% endfor %}
+<br>
+{% if dictionary != None %}
+<canvas id="salesbypublisher"></canvas>
+
+<a href="{{ url_for('VGStats.index') }}"> Index </a> |
+<a href="{{ url_for('VGStats.game_search') }}"> Search </a> |
+<a href="{{ url_for('VGStats.genre_by_region') }}"> Genre By Region </a>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+    var ctx = document.getElementById('salesbypublisher').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for key in dictionary%} '{{key}}',{%endfor%}],
+            datasets: [{
+                label: 'Sales By publisher (Millions)',
+                data: [{% for value in dictionary.values()%} '{{value}}',{%endfor%}]
+                }]
+        },
+
+        options: {}
+    });
+</script>
+{% endif %}
+{% endblock %}
