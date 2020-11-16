@@ -15,8 +15,8 @@ def create_app():
     except OSError:
         pass
 
-    from . import VideoGameStatistics
-    app.register_blueprint(VideoGameStatistics.bp)
+    from . import VGStats
+    app.register_blueprint(VGStats.bp)
     # app.add_url_rule('/', endpoint='index')
 
 

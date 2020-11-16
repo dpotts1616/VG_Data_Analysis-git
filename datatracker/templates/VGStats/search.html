@@ -36,12 +36,13 @@
             <td> {{platforms}}</td>
         </tr>
     </table>
-<canvas id="globalsales"></canvas>
+<canvas id="platformsales"></canvas>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script>
-    var ctx = document.getElementById('globalsales').getContext('2d');
+    var ctx = document.getElementById('platformsales').getContext('2d');
     var chart = new Chart(ctx, {
         type: 'horizontalBar',
         data: {
@@ -61,4 +62,8 @@
 </script>
 {% endif %}
 {%if message != None%}{{message}}{%endif%}
+<br>
+<a href="{{ url_for('VGStats.index') }}"> Index </a> |
+<a href="{{ url_for('VGStats.game_search') }}"> Search </a> |
+<a href="{{ url_for('VGStats.genre_by_region') }}"> Genre By Region </a>
 {% endblock %}
