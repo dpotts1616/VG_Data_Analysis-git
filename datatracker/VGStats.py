@@ -22,8 +22,6 @@ def game_search():
                 platforms = get_all_platforms(game.name, games)
                 platform_level_sales = get_platform_sales(platforms, game.name, games)
                 return render_template('VGStats/search.html', game=game, platforms=platforms, platformdict=platform_level_sales, message=None)
-            else:
-                return render_template('VGStats/search.html', game=None, message="Sorry, we don't have that game")
     else:
         return render_template('VGStats/search.html', game=None, message=None)
 
